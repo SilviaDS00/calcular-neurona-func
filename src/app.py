@@ -11,6 +11,8 @@ def funcion_activacion(valor, tipo):
     elif tipo == "Tangente hiperbólica":
         return (2 / (1 + 2.71828**(-2 * valor))) - 1
 
+st.image("https://cdn.pixabay.com/photo/2014/03/25/15/20/neuron-296581_1280.png", width=400)
+
 st.title("Simulador de neurona")
 
 num_entradas = st.slider("Elige el número de entradas/pesos que tendrá la neurona", 1, 10, 1)
