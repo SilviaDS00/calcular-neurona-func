@@ -1,15 +1,5 @@
 import streamlit as st
-
-def calcular_salida(w, x, sesgo):
-    return sum(w_i * x_i for w_i, x_i in zip(w, x)) + sesgo
-
-def funcion_activacion(valor, tipo):
-    if tipo == "Sigmoide":
-        return 1 / (1 + 2.71828**(-valor))
-    elif tipo == "ReLU":
-        return max(0, valor)
-    elif tipo == "Tangente hiperbólica":
-        return (2 / (1 + 2.71828**(-2 * valor))) - 1
+from clase_neuron import Neuron
 
 st.text("Made by Silvia Donaire Serrano")
 
@@ -46,11 +36,20 @@ with col1:
     sesgo = st.number_input("Introduzca un valor para el sesgo")
 with col2:
     st.subheader("Función de activación")
-    tipo_activacion = st.selectbox("Elige una función de activación", ["Sigmoide", "ReLU", "Tangente hiperbólica"])
+    tipo_activacion = st.selectbox("Elige una función de activación", ["reLU","Sigmoide", "Tangente hiperbólica"])
 
 if st.button("Calcular la salida"):
-    salida_sin_activacion = calcular_salida(pesos, entradas, sesgo)
-    salida_con_activacion = funcion_activacion(salida_sin_activacion, tipo_activacion)
+    # Crear un diccionario para mapear los nombres de las funciones de activación con las funciones de la clase Neuron
+    activation_functions = {
+            "reLU": "relu",
+            "Sigmoide": "sigmoid",
+            "Tangente hiperbólica": "tanh"
+        }
+    # Obtener la función de activación
+    activation_function = activation_functions[tipo_activacion]
+    # Crear la neurona
+    neurona = Neuron(pesos, sesgo, activation_function)
+    # Calcular la salida
+    salida_sin_activacion = neurona.run(entradas)
     
-    st.write(f"La salida de la neurona antes de la función de activación es {salida_sin_activacion}")
-    st.write(f"La salida de la neurona después de la función de activación ({tipo_activacion}) es {salida_con_activacion}")
+    st.write(f"La salida de la neurona después de la función de activación ({tipo_activacion}) es {salida_sin_activacion}")
